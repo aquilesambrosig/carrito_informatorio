@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +45,6 @@ public class CarritoController {
     @GetMapping(value = "/carrito/{id}")
     public List<Carrito> verCarritosPorUsuario(@PathVariable("id") Long id){
         Usuario usuario = usuarioRepository.getById(id);
-
         return usuario.getCarritos();
         
     }
@@ -70,4 +70,15 @@ public class CarritoController {
         return carritoRepository.save(carrito);
     
 }
+
+    @PutMapping(value = "/carrito/{id}")
+    public Carrito modificarCarrito(@PathVariable("id") Long id, @RequestBody Carrito carrito) {
+        Carrito carritoExistente = carritoRepository.findById(id).get();
+        /*carritoExistente.setEstadoCarrito(carrito.getEstadoCarrito());*/
+        /*carritoExistente.setProductos(carrito.getProductos());*/
+       
+        return carritoRepository.save(carritoExistente);
+    
+    }
+
 }
