@@ -16,6 +16,7 @@ import com.informatorio.carrito.repository.ProductoRepository;
 import com.informatorio.carrito.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,14 +43,22 @@ public class CarritoController {
     @Autowired
     private ProductoRepository productoRepository;
 
-    @GetMapping(value = "/carrito/{id}")
+    @GetMapping(value = "/carrito/usuario={id}")
     public List<Carrito> verCarritosPorUsuario(@PathVariable("id") Long id){
         Usuario usuario = usuarioRepository.getById(id);
         return usuario.getCarritos();
         
     }
+    @GetMapping(value = "/carrito/{id}")
+    public Carrito verCarritoPorID(@PathVariable("id") Long id){
+        Carrito carrito = carritoRepository.findById(id).get();
+        return carrito;
+        
+    }
 
-    @PostMapping(value = "/carrito/{id}")
+    
+
+    @PostMapping(value = "/carrito/usuario={id}")
     public Carrito crearCarrito(@PathVariable("id") Long id){
         Carrito carrito = new Carrito();
         carrito.setEstadoCarrito(EstadoCarrito.ACTIVO);
@@ -74,11 +83,17 @@ public class CarritoController {
     @PutMapping(value = "/carrito/{id}")
     public Carrito modificarCarrito(@PathVariable("id") Long id, @RequestBody Carrito carrito) {
         Carrito carritoExistente = carritoRepository.findById(id).get();
-        /*carritoExistente.setEstadoCarrito(carrito.getEstadoCarrito());*/
-        /*carritoExistente.setProductos(carrito.getProductos());*/
-       
+        carritoExistente.setEstadoCarrito(carrito.getEstadoCarrito());
+        carritoExistente.setProductos(carrito.getProductos());
+    
         return carritoRepository.save(carritoExistente);
     
+    }
+
+    @DeleteMapping(value = "/carrito/{id}")
+    public String borrarCarrito(@PathVariable("id") Long id){
+        carritoRepository.deleteById(id);
+        return "Carrito borrado exitosamente";
     }
 
 }

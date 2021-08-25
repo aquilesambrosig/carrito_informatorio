@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.hibernate.annotations.ManyToAny;
 
 @Entity 
@@ -35,18 +37,18 @@ public class Producto {
     private String descripcion;
 
     private Long precioUnitario;
-
+    
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Carrito> carritos = new ArrayList<>();
+
+    
 
     public Producto() {
 
     }
 
-    public Producto(String description, Long precioUnitario) {
-        this.descripcion = description;
-        this.precioUnitario=precioUnitario;
-        }
+  
     
     @Column(unique=true)
     @Size(max = 16)
@@ -56,6 +58,50 @@ public class Producto {
     @JoinColumn(name = "producto_precio", referencedColumnName = "id")
     private Precios precio;
 
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Categoria> categorias = new HashSet<>();
+    
+    public void setCategorias(Set<Categoria> categorias) {
+    this.categorias = categorias;
+    }
+    public Set<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    
+    
+
+    public List<Carrito> getCarritos() {
+        return carritos;
+    }
+    public String getCodigoInventario() {
+        return codigoInventario;
+    }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public Long getId() {
+        return id;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public Precios getPrecio() {
+        return precio;
+    }
+    public void setCodigoInventario(String codigoInventario) {
+        this.codigoInventario = codigoInventario;
+    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public void setPrecio(Precios precio) {
+        this.precio = precio;
+    }
 
 
 

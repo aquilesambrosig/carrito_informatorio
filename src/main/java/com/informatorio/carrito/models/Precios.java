@@ -24,9 +24,27 @@ public class Precios {
     @OneToOne(mappedBy = "precio")
     private Producto producto;
 
+    
+  
+    
+
     private BigDecimal precioUnitario;
 
-
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+    public BigDecimal getPrecioUnitario() {
+        return precioUnitario;
+    }
+    public Producto getProducto() {
+        return producto;
+    }
+ 
+    
+  
 
     
     

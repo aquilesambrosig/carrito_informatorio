@@ -36,10 +36,12 @@ public class Carrito {
     private Usuario usuario;
     
     
-    /*private List<Producto> productos = new ArrayList<>();*/
-    @JsonIgnore
+   
+    
     @ManyToMany(mappedBy = "carritos", fetch = FetchType.LAZY)
     private List<Producto> productos = new ArrayList<>();
+
+    
 
 
 
