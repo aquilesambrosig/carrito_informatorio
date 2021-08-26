@@ -11,6 +11,7 @@ import java.util.List;
 public class ProductoController {
     @Autowired
     private ProductoRepository productoRepository;
+    
 
     @PostMapping(value = "/producto")
     public Producto crearProducto(@RequestBody Producto producto){
@@ -53,6 +54,7 @@ public class ProductoController {
     public Producto modificarproducto(@PathVariable("id") Long id, @RequestBody Producto producto) {
         Producto productoExistente = productoRepository.findById(id).get();
         productoExistente.setPrecio(producto.getPrecio());
+        productoExistente.setCategorias(producto.getCategorias());
     
         return productoRepository.save(productoExistente);
     
