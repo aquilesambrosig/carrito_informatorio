@@ -1,5 +1,8 @@
 package com.informatorio.carrito.repository;
 
+import com.informatorio.carrito.models.Categoria;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,24 +18,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ProductoRepository extends JpaRepository<Producto, Long>{
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
-    List<Producto> findByNombreStartingWith(String nombre);
-   List<Producto> findByCategorias(Categoria data);
+    Categoria findAllById(Long id);
     
-
-    List<Producto> findByNombreAndDescripcionStartingWith(String nombre, String descripcion);
-
-  
-
- 
- 
-
-
-
-
- 
-
-  
 }

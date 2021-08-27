@@ -1,17 +1,24 @@
 
 package com.informatorio.carrito.controller;
 
+import com.informatorio.carrito.models.Categoria;
 import com.informatorio.carrito.models.Producto;
+import com.informatorio.carrito.repository.CategoriaRepository;
 import com.informatorio.carrito.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController()
 public class ProductoController {
     @Autowired
     private ProductoRepository productoRepository;
     
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     @PostMapping(value = "/producto")
     public Producto crearProducto(@RequestBody Producto producto){
@@ -27,11 +34,25 @@ public class ProductoController {
         return productoRepository.findByNombreStartingWith(nombre);
         
     }
-    /*@GetMapping(value = "/producto/buscar")
-    public List<Producto> buscarPorCategoria(@RequestParam(value="categoria") String categoria) {
-        return productoRepository.findByCategoriaStartingWith(categoria);
+    @GetMapping(value = "/producto/buscarC")
+    public Categoria buscarCategoria(@RequestParam(value="categoria") Long id) {
+        return categoriaRepository.findAllById(id);
         
-    } QUEDA ESTO PARA CUANDO IMPLEMENTE CATEGORIAS*/ 
+    }
+
+    @GetMapping(value = "/producto/buscarN")
+    public List<Producto> findAll(@RequestParam(value="categoria") Long id) {
+    Categoria data = categoriaRepository.findAllById(id);
+    return productoRepository.findByCategorias(data);
+
+        
+    }
+
+    @GetMapping(value = "/categorias")
+    public List<Categoria> verCategorias(){
+        return categoriaRepository.findAll();
+    }
+    //// QUEDA ESTO PARA CUANDO IMPLEMENTE CATEGORIAS*/
 
     /*@GetMapping(value = "/producto/buscar")
     public List<Producto> buscarPorCategoriaYNombre(@RequestParam(value="categoria") String categoria, @RequestParam(value="nombre") String nombre) {

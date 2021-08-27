@@ -90,6 +90,7 @@ public class Producto {
     public Precios getPrecio() {
         return precio;
     }
+    
     public void setCodigoInventario(String codigoInventario) {
         this.codigoInventario = codigoInventario;
     }
