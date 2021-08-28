@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 public class Usuario {
     @Id
@@ -36,7 +38,8 @@ public class Usuario {
     private String direccion;
     
     @Column(nullable = true,updatable = false)
-    private LocalDate fechaAlta  = LocalDate.now();
+    @CreationTimestamp
+    private LocalDate fechaAlta;
 
 
  

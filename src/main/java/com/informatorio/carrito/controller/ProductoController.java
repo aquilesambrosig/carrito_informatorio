@@ -1,6 +1,7 @@
 
 package com.informatorio.carrito.controller;
 
+import com.informatorio.carrito.config.exception.NotFoundException;
 import com.informatorio.carrito.models.Categoria;
 import com.informatorio.carrito.models.Producto;
 import com.informatorio.carrito.repository.CategoriaRepository;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController()
+@RequestMapping(value="/producto")
 public class ProductoController {
     @Autowired
     private ProductoRepository productoRepository;
@@ -20,14 +22,23 @@ public class ProductoController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    @PostMapping(value = "/producto")
+    @PostMapping(value = "")
     public Producto crearProducto(@RequestBody Producto producto){
         return productoRepository.save(producto);
     }
-    @GetMapping(value = "/producto/{id}")
-    public Producto verProductoPorID(@PathVariable("id") Long id){
-        Producto producto = productoRepository.findById(id).get();
-        return producto;
+    @GetMapping(value = "/{id}")
+    @ExceptionHandler
+    public ResponseEntity<?> verProductoPorID(@PathVariable("id") Long id){
+        try {return ResponseEntity.ok(productoRepository.findById(id).get());
+            
+        } catch (Exception e) {
+           throw new NotFoundException("NotFound");
+        }
+
+        
+        
+        
+        
     }
     @GetMapping(value = "/producto/buscar")
     public List<Producto> buscarPorNombre(@RequestParam(value="nombre") String nombre) {
