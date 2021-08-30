@@ -27,12 +27,11 @@ public class ProductoController {
         return productoRepository.save(producto);
     }
     @GetMapping(value = "/{id}")
-    @ExceptionHandler
-    public ResponseEntity<?> verProductoPorID(@PathVariable("id") Long id){
+    public ResponseEntity<?>   verProductoPorID(@PathVariable("id") Long id) throws NotFoundException{
         try {return ResponseEntity.ok(productoRepository.findById(id).get());
             
         } catch (Exception e) {
-           throw new NotFoundException("NotFound");
+           throw new NotFoundException("PRODUCTO NO ENCONTRADO");
         }
 
         

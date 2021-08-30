@@ -4,6 +4,7 @@ import com.informatorio.carrito.config.exception.BadRequestException;
 import com.informatorio.carrito.config.exception.NotFoundException;
 
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,13 +12,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@ControllerAdvice(annotations = RestController.class)
-public class ExceptionConfig {
+@ControllerAdvice
+public class ExceptionConfig extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> notFoundException(Exception e) {
+    public ResponseEntity<?> notFoundException(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+   
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<?> badRequestException (Exception e) {
