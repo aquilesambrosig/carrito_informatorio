@@ -21,6 +21,13 @@ public class ProductoController {
     
     @Autowired
     private CategoriaRepository categoriaRepository;
+    
+
+    @GetMapping(value = "")
+    public List<Producto> verTodosLosProductos() {
+        return productoRepository.findAll();
+    }
+
 
     @PostMapping(value = "")
     public Producto crearProducto(@RequestBody Producto producto){
@@ -39,39 +46,30 @@ public class ProductoController {
         
         
     }
-    @GetMapping(value = "/producto/buscar")
-    public List<Producto> buscarPorNombre(@RequestParam(value="nombre") String nombre) {
-        return productoRepository.findByNombreStartingWith(nombre);
+    @GetMapping(value = "/nombre")
+    public ResponseEntity<?> buscarPorNombre(@RequestParam(value="a") String nombre) {
+       try  {return ResponseEntity.ok(productoRepository.findByNombreStartingWith(nombre));
         
-    }
-    @GetMapping(value = "/producto/buscarC")
-    public Categoria buscarCategoria(@RequestParam(value="categoria") Long id) {
-        return categoriaRepository.findAllById(id);
-        
+    } catch (Exception e) {
+        throw new NotFoundException("PRODUCTO NO ENCONTRADO");
+     }
     }
 
-    @GetMapping(value = "/producto/buscarN")
-    public List<Producto> findAll(@RequestParam(value="categoria") Long id) {
+
+    @GetMapping(value = "/categoria")
+    public List<Producto> findAll(@RequestParam(value="id") Long id) {
     Categoria data = categoriaRepository.findAllById(id);
     return productoRepository.findByCategorias(data);
 
         
     }
 
-    @GetMapping(value = "/categorias")
-    public List<Categoria> verCategorias(){
-        return categoriaRepository.findAll();
-    }
     //// QUEDA ESTO PARA CUANDO IMPLEMENTE CATEGORIAS*/
 
-    /*@GetMapping(value = "/producto/buscar")
-    public List<Producto> buscarPorCategoriaYNombre(@RequestParam(value="categoria") String categoria, @RequestParam(value="nombre") String nombre) {
-        return productoRepository.findByNombreAndDescripcionStartingWith(categoria, nombre);
-    }QUEDA ESTO PARA CUANDO IMPLEMENTE CATEGORIAS*/ 
-
-    @GetMapping(value = "/producto")
-    public List<Producto> verTodosLosProductos() {
-        return productoRepository.findAll();
+    @GetMapping(value = "/buscar")
+    public List<Producto> buscarPorCategoriaYNombre(@RequestParam(value="categoria", required = false) Long categoria, @RequestParam(value="nombre", required = false) String nombre) {
+        Categoria data = categoriaRepository.findAllById(categoria);
+        return productoRepository.findByCategoriasAndNombreStartingWith(data, nombre);
     }
 
     @DeleteMapping(value = "/producto/{id}")
