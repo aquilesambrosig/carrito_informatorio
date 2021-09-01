@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.websocket.server.PathParam;
 
+import com.informatorio.carrito.config.exception.NotFoundException;
 import com.informatorio.carrito.models.Carrito;
 import com.informatorio.carrito.models.Categoria;
 import com.informatorio.carrito.models.EstadoCarrito;
@@ -42,17 +43,19 @@ public class CategoriaController {
     
     @GetMapping(value = "")
     public ResponseEntity<?> buscarCategoria(@RequestParam(required = false, value="id") String id) {
-        if (id == null) {
+       try { if (id == null) {
             return ResponseEntity.ok(categoriaRepository.findAll());
             
         }
         return ResponseEntity.ok(categoriaRepository.findAllById(Long.valueOf(id)));
         
-    }
+    } catch (Exception e) {
+        throw new NotFoundException("USUARIO NO ENCONTRADO");
+     }
 
 /*    @GetMapping(value = "")
     public List<Categoria> verCategorias(){
         return categoriaRepository.findAll();
     }
     */
-}
+}}

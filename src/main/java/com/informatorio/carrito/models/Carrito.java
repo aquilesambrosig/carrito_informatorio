@@ -20,7 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Carrito {
@@ -42,6 +44,8 @@ public class Carrito {
     private List<Producto> productos = new ArrayList<>();
 
     
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LineaDeCarrito> lineasDeCarrito = new ArrayList<>();
 
 
 
@@ -50,14 +54,15 @@ public class Carrito {
 
     public Carrito() {
 
-}
-
-    public Carrito(Long cart_total) {
-    this.cart_total = cart_total;
     }
+
 
     @Enumerated(EnumType.STRING)
     private EstadoCarrito estadoCarrito;
+
+    public List<LineaDeCarrito> getLineasDeCarrito() {
+        return lineasDeCarrito;
+    }
 
     public EstadoCarrito getEstadoCarrito() {
         return estadoCarrito;
@@ -80,5 +85,15 @@ public class Carrito {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
-    
+    public void agregarLineDeCarrito(LineaDeCarrito lineaDeCarrito) {
+        lineasDeCarrito.add(lineaDeCarrito);
+        lineaDeCarrito.setCarrito(this);
+    }
+
+    public void removerLineDeCarrito(LineaDeCarrito lineaDeCarrito) {
+        lineasDeCarrito.remove(lineaDeCarrito);
+        lineaDeCarrito.setCarrito(null);
+    }
+
 }
+
