@@ -1,5 +1,6 @@
 package com.informatorio.carrito.models;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +50,7 @@ public class Carrito {
 
 
 
-    private Long cart_total;
+    private BigDecimal cart_total;
 
 
     public Carrito() {
@@ -59,6 +60,18 @@ public class Carrito {
 
     @Enumerated(EnumType.STRING)
     private EstadoCarrito estadoCarrito;
+
+    public void setCart_total(BigDecimal cart_total) {
+        this.cart_total = cart_total;
+    }
+    public BigDecimal getCart_total() {
+        
+            for (LineaDeCarrito lineaDeCarrito : lineasDeCarrito) {
+            cart_total = cart_total.add(lineaDeCarrito.getSubtotal());     
+            }
+            return cart_total;
+        }
+    
 
     public List<LineaDeCarrito> getLineasDeCarrito() {
         return lineasDeCarrito;
@@ -94,6 +107,7 @@ public class Carrito {
         lineasDeCarrito.remove(lineaDeCarrito);
         lineaDeCarrito.setCarrito(null);
     }
+    
 
 }
 

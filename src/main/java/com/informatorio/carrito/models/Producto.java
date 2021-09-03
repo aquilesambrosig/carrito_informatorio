@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -40,7 +41,7 @@ public class Producto {
     @Size(max = 255)
     private String descripcion;
 
-    private Long precioUnitario;
+   
     
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -62,10 +63,19 @@ public class Producto {
     @Size(max = 16)
     private String codigoInventario;
 
-    @OneToOne(cascade = CascadeType.ALL)
+ /*   @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "producto_precio", referencedColumnName = "id")
-    private Precios precio;
+    private Precios precio;*/
 
+    @Positive
+    private BigDecimal precioUnitario;
+
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+    public BigDecimal getPrecioUnitario() {
+        return precioUnitario;
+    }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Categoria> categorias = new HashSet<>();
@@ -95,9 +105,7 @@ public class Producto {
     public String getNombre() {
         return nombre;
     }
-    public Precios getPrecio() {
-        return precio;
-    }
+
     public List<LineaDeCarrito> getLineasDeCarrito() {
         return lineasDeCarrito;
     }
@@ -110,11 +118,14 @@ public class Producto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public void setPrecio(Precios precio) {
+/*  public void setPrecio(Precios precio) {
         this.precio = precio;
     }
 
-
+        public Precios getPrecio() {
+        return precio;
+    }
+*/
 
 
 

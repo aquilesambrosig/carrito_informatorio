@@ -79,10 +79,10 @@ public class ProductoController {
 
     }
 
-    @PutMapping(value = "/producto/{id}")
+    @PutMapping(value = "/{id}")
     public Producto modificarproducto(@PathVariable("id") Long id, @RequestBody Producto producto) {
         Producto productoExistente = productoRepository.findById(id).get();
-        productoExistente.setPrecio(producto.getPrecio());
+        productoExistente.setPrecioUnitario(producto.getPrecioUnitario());
         productoExistente.setCategorias(producto.getCategorias());
     
         return productoRepository.save(productoExistente);

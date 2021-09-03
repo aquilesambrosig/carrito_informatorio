@@ -1,5 +1,6 @@
 package com.informatorio.carrito.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -88,6 +89,7 @@ public class CarritoController {
     public Carrito crearCarrito(@PathVariable("id") Long id){
         Carrito carrito = new Carrito();
         carrito.setEstadoCarrito(EstadoCarrito.ACTIVO);
+        carrito.setCart_total(new BigDecimal(0));
         Usuario usuario = usuarioRepository.getById(id);
         carrito.setUsuario(usuario);
      
@@ -125,6 +127,9 @@ public class CarritoController {
         lineaDeCarrito.setProducto(producto);
         lineaDeCarrito.setCantidad(operacionCarrito.getCantidad());
         carrito.agregarLineDeCarrito(lineaDeCarrito);
+        //////ESTOS DOS PERSISTEN EN LA BASE DE DATOS NO USARLOS ACA CON CARRITO. USARLOS CON ORDEN CUANDO GENERE LA ENTIDAD "ORDEN"
+        /*lineaDeCarrito.setSubtotal(producto.getPrecioUnitario().multiply(new BigDecimal(operacionCarrito.getCantidad())));
+        carrito.setCart_total(carrito.getCart_total().add(lineaDeCarrito.getSubtotal()));*/
         try {carritoRepository.save(carrito);
         return new ResponseEntity<>("OK", HttpStatus.CREATED);
     

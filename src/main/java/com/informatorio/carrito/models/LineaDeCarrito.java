@@ -1,5 +1,7 @@
 package com.informatorio.carrito.models;
 
+import java.math.BigDecimal;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +35,12 @@ public class LineaDeCarrito {
 
     private Integer cantidad;
 
+    private BigDecimal subtotal;
+
+
     public LineaDeCarrito() {
+       
+       
 
     }
 
@@ -68,4 +75,10 @@ public class LineaDeCarrito {
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
+    public BigDecimal getSubtotal() {
+        return producto.getPrecioUnitario().multiply(new BigDecimal(this.getCantidad()));
+    }
+   /* public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal =  producto.getPrecioUnitario().multiply(new BigDecimal(this.cantidad));
+    }*/
 }
