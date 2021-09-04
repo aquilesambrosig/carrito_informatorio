@@ -28,6 +28,9 @@ public class LineaDeCarrito {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Carrito carrito;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Orden orden;
     
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

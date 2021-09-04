@@ -36,6 +36,9 @@ public class Usuario {
     private String apellido;
 
     private String direccion;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Orden> ordenes = new ArrayList<>();
     
     @Column(nullable = true,updatable = false)
     @CreationTimestamp

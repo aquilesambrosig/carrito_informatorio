@@ -66,11 +66,16 @@ public class Carrito {
     }
     public BigDecimal getCart_total() {
         
-            for (LineaDeCarrito lineaDeCarrito : lineasDeCarrito) {
+           if (this.estadoCarrito==EstadoCarrito.ACTIVO) {
+               
+             for (LineaDeCarrito lineaDeCarrito : lineasDeCarrito) {
             cart_total = cart_total.add(lineaDeCarrito.getSubtotal());     
             }
             return cart_total;
         }
+        return cart_total;
+        
+    }
     
 
     public List<LineaDeCarrito> getLineasDeCarrito() {
