@@ -48,7 +48,7 @@ public class ProductoController {
     }
 
         
-        @GetMapping(value = "/fecha/{fecha}")
+      /*  @GetMapping(value = "/fecha/{fecha}")
         //public ResponseEntity getOrdenFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
         public ResponseEntity getProductoFecha(@PathVariable("fecha") String fecha) {
     
@@ -60,10 +60,25 @@ public class ProductoController {
             throw new BadRequestException("MAL FORMATO FECHA");
         }
        
+        */
+
+        @GetMapping(value = "/fecha")
+        //public ResponseEntity getProductoFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
+        public ResponseEntity getProductoFechaEntre(@RequestParam(value="desde", required = false, defaultValue = "1900-01-01") String fechaDesde
+        ,@RequestParam(value="hasta", required = false, defaultValue = "2100-12-12") String fechaHasta) {
+    
+            try{
+               LocalDate desde = LocalDate.parse(fechaDesde);
+               LocalDate hasta = LocalDate.parse(fechaHasta);
+        
+        return ResponseEntity.ok(productoRepository.findByFechaAltaBetween(desde, hasta));
+        } catch (Exception e) {
+            throw new BadRequestException("MAL FORMATO FECHA");
+            }
+        } 
         
         
-        
-    }
+    
     @GetMapping(value = "/nombre")
     public ResponseEntity<?> buscarPorNombre(@RequestParam(value="a") String nombre) {
        try  {return ResponseEntity.ok(productoRepository.findByNombreStartingWith(nombre));

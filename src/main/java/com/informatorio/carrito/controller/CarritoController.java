@@ -1,6 +1,7 @@
 package com.informatorio.carrito.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,6 +57,39 @@ public class CarritoController {
         this.carritoRepository = carritoRepository;
         this.productoRepository = productoRepository;
     }
+
+ /*   @GetMapping(value = "/carrito/fechadesde/{fecha}")
+    //public ResponseEntity getCarritoFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
+    public ResponseEntity getCarritoFecha(@PathVariable("fecha") String fecha) {
+
+        try{
+           LocalDate fechaDeCreacion = LocalDate.parse(fecha);
+    
+    return ResponseEntity.ok(carritoRepository.findByFechaCreacionAfter(fechaDeCreacion));
+    } catch (Exception e) {
+        throw new BadRequestException("MAL FORMATO FECHA");
+        }
+    }   */
+
+
+
+    
+    @GetMapping(value = "/carrito/fecha")
+    //public ResponseEntity getCarritoFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
+    public ResponseEntity getCarritoFechaEntre(@RequestParam(value="desde", required = false, defaultValue = "1900-01-01") String fechaDesde
+    ,@RequestParam(value="hasta", required = false, defaultValue = "2100-12-12") String fechaHasta) {
+
+        try{
+           LocalDate desde = LocalDate.parse(fechaDesde);
+           LocalDate hasta = LocalDate.parse(fechaHasta);
+    
+    return ResponseEntity.ok(carritoRepository.findByFechaCreacionBetween(desde, hasta));
+    } catch (Exception e) {
+        throw new BadRequestException("MAL FORMATO FECHA");
+        }
+    } 
+
+
 
     @GetMapping(value = "/carrito/usuario={id}")
     public ResponseEntity<List<Carrito>> verCarritosPorUsuario(@PathVariable("id") Long id){

@@ -30,7 +30,8 @@ public class Orden {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Usuario usuario;
 

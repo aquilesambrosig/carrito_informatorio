@@ -2,10 +2,14 @@ package com.informatorio.carrito.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.informatorio.carrito.models.Usuario;
 import com.informatorio.carrito.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,8 +28,12 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
 
     @PostMapping(value = "/usuario")
-    public Usuario crearUsuario(@RequestBody Usuario producto){
-        return usuarioRepository.save(producto);
+    public ResponseEntity<?> crearUsuario(@Valid @RequestBody Usuario user){
+        if (usuarioRepository.findByEmail(user.getEmail()) != null) {
+            return new ResponseEntity<> ("Existe ese correo",HttpStatus.CONFLICT);
+        }
+        usuarioRepository.save(user);
+        return new ResponseEntity<>("Usuario creado", HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/saludo", method = RequestMethod.GET)
@@ -35,13 +44,29 @@ public class UsuarioController {
   
 
     @GetMapping(value = "/usuario")
-    public List<Usuario> verUsuarios(){
-        return usuarioRepository.findAll();
+    public ResponseEntity<?> verUsuarios(@RequestParam(value="ciudad", required = false) String ciudad, 
+    @RequestParam(value="id", required = false) Long id)
+    {
+        if (ciudad != null) {
+            
+            return ResponseEntity.ok(usuarioRepository.findByCiudadContaining(ciudad));
+            
+        } else if (id != null) {
+           return ResponseEntity.ok(usuarioRepository.findById(id).get());
+
+           
+        }
+        return ResponseEntity.ok(usuarioRepository.findAll());
+
+       
     }
+
+
+
 
     @GetMapping(value = "/usuario/{id}")
     public Usuario getUsuarioPorId(@PathVariable("id") Long id){
-        return usuarioRepository.getById(id);
+        return usuarioRepository.findById(id).get();
     }
 
     @DeleteMapping(value = "/usuario/{id}")

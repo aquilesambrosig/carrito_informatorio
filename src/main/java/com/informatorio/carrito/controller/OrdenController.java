@@ -82,6 +82,24 @@ public class OrdenController {
          }
     }
 
+
+    @GetMapping(value = "/orden/usuario")
+    public ResponseEntity<List<Orden>> verOrdenPorUsuario(@RequestParam("id") Long id){
+        
+        try  
+        { Usuario usuario = usuarioRepository.getById(id);
+        return ResponseEntity.ok(usuario.getOrdenes());
+        } catch (Exception e) {
+            throw new NotFoundException("USUARIO NO ENCONTRADO");
+            
+         }
+    
+         
+            
+        }
+
+
+
     @PostMapping(value = "/orden/{id_carrito}")
     public ResponseEntity<?> crearOrden(@PathVariable("id_carrito") Long id_carrito/*,@RequestBody Orden orden*/){
        // Orden orden = ordenRepository.getById(id_carrito);
@@ -146,6 +164,25 @@ public class OrdenController {
     }
 }   
     
+    @GetMapping(value = "/orden/fecha")
+    //public ResponseEntity getOrdenFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
+    public ResponseEntity getOrdenFechaEntre(@RequestParam(value="desde", required = false, defaultValue = "1900-01-01") String fechaDesde
+    ,@RequestParam(value="hasta", required = false, defaultValue = "2100-12-12") String fechaHasta) {
+
+        try{
+            LocalDate desde = LocalDate.parse(fechaDesde);
+            LocalDate hasta = LocalDate.parse(fechaHasta);
+
+        return ResponseEntity.ok(ordenRepository.findByFechaCreacionBetween(desde, hasta));
+            } catch (Exception e) {
+        throw new BadRequestException("MAL FORMATO FECHA");
+            }
+        } 
+
+    
+
+
+
 
     @DeleteMapping(value = "/orden/{id_orden}")
     public ResponseEntity<?> borrarOrden(@PathVariable("id_orden") Long id_orden){

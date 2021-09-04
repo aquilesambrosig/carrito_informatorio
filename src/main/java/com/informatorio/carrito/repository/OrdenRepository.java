@@ -13,6 +13,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Long> {
     List<Orden> findByUsuario(Usuario user);
     List<Orden> findByFechaCreacion(LocalDate fechaCreacion);
     List<Orden> findByFechaCreacionAfter(LocalDate fechaCreacion);
+    List<Orden> findByFechaCreacionBetween(LocalDate desde, LocalDate hasta);
 
     
 

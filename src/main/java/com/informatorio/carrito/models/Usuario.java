@@ -17,8 +17,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -27,7 +36,8 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @JsonBackReference
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Carrito> carritos = new ArrayList<>();
 
@@ -37,6 +47,18 @@ public class Usuario {
 
     private String direccion;
 
+   
+    @Column(nullable = false,unique = true)
+    @Email
+    @Size(max = 254)
+    private String email;
+
+    @JsonBackReference
+    @Column(nullable = false)
+    @NotBlank    
+    @Size(min = 6, max = 50)
+    private String password;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Orden> ordenes = new ArrayList<>();
     
@@ -44,6 +66,20 @@ public class Usuario {
     @CreationTimestamp
     private LocalDate fechaAlta;
 
+
+    
+    private String ciudad;
+
+   
+    private String provincia;
+
+    
+    private String pais;
+
+    
+    public Usuario() {
+
+    }
 
  
 
@@ -56,11 +92,27 @@ public class Usuario {
         return apellido;
     }
 
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
 public List<Carrito> getCarritos() {
     return carritos;
 }
     public String getDireccion() {
         return direccion;
+    }
+
+    public List<Orden> getOrdenes() {
+        return ordenes;
     }
 
     
@@ -70,10 +122,26 @@ public List<Carrito> getCarritos() {
     public Long getId() {
         return id;
     }
+    public String getPassword() {
+        return password;
+    }
+    public String getEmail() {
+        return email;
+    }
+
     
     /*---------------SETTERS------------------------------------------------------*/ 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setOrdenes(List<Orden> ordenes) {
+        this.ordenes = ordenes;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
  /*   public void setCarrito(Carrito carrito) {
         this.carrito = carrito;
@@ -89,8 +157,18 @@ public List<Carrito> getCarritos() {
     }
     public void setId(Long id) {
         this.id = id;
+            
+    }
 
-    
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
 }
 

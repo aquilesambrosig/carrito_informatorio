@@ -82,7 +82,7 @@ public class Carrito {
     }
     @Column(nullable = true,updatable = false)
     @CreationTimestamp
-    private LocalDate fecha_creacion;
+    private LocalDate fechaCreacion;
 
     public List<LineaDeCarrito> getLineasDeCarrito() {
         return lineasDeCarrito;
@@ -117,6 +117,9 @@ public class Carrito {
     public void removerLineDeCarrito(LineaDeCarrito lineaDeCarrito) {
         lineasDeCarrito.remove(lineaDeCarrito);
         lineaDeCarrito.setCarrito(null);
+    }
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
     }
     
 
