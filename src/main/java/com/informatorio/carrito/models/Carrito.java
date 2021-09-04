@@ -1,12 +1,14 @@
 package com.informatorio.carrito.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,6 +26,8 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Carrito {
@@ -76,7 +80,9 @@ public class Carrito {
         return cart_total;
         
     }
-    
+    @Column(nullable = true,updatable = false)
+    @CreationTimestamp
+    private LocalDate fecha_creacion;
 
     public List<LineaDeCarrito> getLineasDeCarrito() {
         return lineasDeCarrito;

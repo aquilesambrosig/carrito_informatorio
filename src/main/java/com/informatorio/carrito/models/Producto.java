@@ -1,6 +1,7 @@
 package com.informatorio.carrito.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.ManyToAny;
 
 @Entity 
@@ -86,9 +88,13 @@ public class Producto {
     public Set<Categoria> getCategorias() {
         return categorias;
     }
+    @CreationTimestamp
+    private LocalDate fecha_creacion;
 
     
-    
+    public LocalDate getFecha_creacion() {
+        return fecha_creacion;
+    }
 
     public List<Carrito> getCarritos() {
         return carritos;

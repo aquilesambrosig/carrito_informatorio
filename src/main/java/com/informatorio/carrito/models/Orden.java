@@ -54,9 +54,12 @@ public class Orden {
     @OneToMany(mappedBy = "orden",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Linea> linea = new ArrayList<>();
 
-    /*  @CreationTimestamp
-    private LocalDate fecha_creacion;
+    @Column(nullable = true,updatable = false) 
+    @CreationTimestamp
+    private LocalDate fechaCreacion;
+    
 
+/*
 
     @Column(unique = true,nullable = false)
     private Long numero;
@@ -72,6 +75,9 @@ public class Orden {
 
     public Long getCarrito_id() {
         return carrito_id;
+    }
+    public LocalDate getFechaCreacion() {
+        return fechaCreacion;
     }
     public Long getId() {
         return id;

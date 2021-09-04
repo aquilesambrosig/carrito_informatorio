@@ -8,6 +8,7 @@ import com.informatorio.carrito.repository.CarritoRepository;
 import com.informatorio.carrito.repository.OrdenRepository;
 import com.informatorio.carrito.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,8 @@ import static com.informatorio.carrito.models.Rol.Comerciante;
 import static com.informatorio.carrito.service.OrdenService.tratarCancelarOrden;
 import static com.informatorio.carrito.service.OrdenService.tratarCreacionOrden;*/
 import static java.lang.Math.random;
+
+import java.time.LocalDate;
 
 @RestController
 public class OrdenController {
@@ -129,6 +132,19 @@ public class OrdenController {
         return null;
     }
 */
+
+    @GetMapping(value = "/orden/fecha/{fecha}")
+    //public ResponseEntity getOrdenFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
+    public ResponseEntity getOrdenFecha(@PathVariable("fecha") String fecha) {
+
+        try{
+           LocalDate fechaDeCreacion = LocalDate.parse(fecha);
+    
+    return ResponseEntity.ok(ordenRepository.findByFechaCreacionAfter(fechaDeCreacion));
+    } catch (Exception e) {
+        throw new BadRequestException("MAL FORMATO FECHA");
+    }
+}   
     
 
     @DeleteMapping(value = "/orden/{id_orden}")
