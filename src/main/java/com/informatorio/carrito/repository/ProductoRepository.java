@@ -1,6 +1,7 @@
 package com.informatorio.carrito.repository;
 
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long>{
     List<Producto> findByCategoriasAndNombre(Categoria data, String nombre);
     List<Producto> getByCategoriasAndNombreStartingWith(Categoria data, String nombre);
     List<Producto> getByCategorias(Categoria data);
+    List<Producto> findByFechaAltaAfter(LocalDate fechaAlta);
     
    
 

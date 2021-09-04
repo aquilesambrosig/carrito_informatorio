@@ -1,6 +1,7 @@
 
 package com.informatorio.carrito.controller;
 
+import com.informatorio.carrito.config.exception.BadRequestException;
 import com.informatorio.carrito.config.exception.NotFoundException;
 import com.informatorio.carrito.models.Categoria;
 import com.informatorio.carrito.models.Producto;
@@ -9,6 +10,8 @@ import com.informatorio.carrito.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,6 +36,8 @@ public class ProductoController {
     public Producto crearProducto(@RequestBody Producto producto){
         return productoRepository.save(producto);
     }
+
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<?>   verProductoPorID(@PathVariable("id") Long id) throws NotFoundException{
         try {return ResponseEntity.ok(productoRepository.findById(id).get());
@@ -40,8 +45,21 @@ public class ProductoController {
         } catch (Exception e) {
            throw new NotFoundException("PRODUCTO NO ENCONTRADO");
         }
+    }
 
         
+        @GetMapping(value = "/fecha/{fecha}")
+        //public ResponseEntity getOrdenFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
+        public ResponseEntity getProductoFecha(@PathVariable("fecha") String fecha) {
+    
+            try{
+               LocalDate fechaAlta = LocalDate.parse(fecha);
+        
+        return ResponseEntity.ok(productoRepository.findByFechaAltaAfter(fechaAlta));
+        } catch (Exception e) {
+            throw new BadRequestException("MAL FORMATO FECHA");
+        }
+       
         
         
         

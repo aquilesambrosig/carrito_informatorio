@@ -79,21 +79,23 @@ public class Producto {
         return precioUnitario;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Categoria> categorias = new HashSet<>();
     
     public void setCategorias(Set<Categoria> categorias) {
-    this.categorias = categorias;
+        this.categorias = categorias;
     }
     public Set<Categoria> getCategorias() {
         return categorias;
     }
+
+    @Column(nullable = true,updatable = false)
     @CreationTimestamp
-    private LocalDate fecha_creacion;
+    private LocalDate fechaAlta;
 
     
-    public LocalDate getFecha_creacion() {
-        return fecha_creacion;
+    public LocalDate getFechaAlta() {
+        return fechaAlta;
     }
 
     public List<Carrito> getCarritos() {
@@ -124,6 +126,7 @@ public class Producto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
 /*  public void setPrecio(Precios precio) {
         this.precio = precio;
     }

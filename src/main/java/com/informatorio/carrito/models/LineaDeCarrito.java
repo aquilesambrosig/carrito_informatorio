@@ -29,6 +29,8 @@ public class LineaDeCarrito {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Carrito carrito;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Orden orden;
     
