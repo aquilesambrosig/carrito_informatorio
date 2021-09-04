@@ -37,8 +37,7 @@ public class Orden {
     @Column(unique = true,nullable = false)
     private Long nroFactura;
 
-    @OneToMany(mappedBy = "orden",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LineaDeCarrito> lineasDeOrden = new ArrayList<>();
+
 
     @Column(nullable = false, updatable = false)
     private Long carrito_id;
@@ -77,9 +76,7 @@ public class Orden {
     public Long getId() {
         return id;
     }
-    public List<LineaDeCarrito> getLineasDeOrden() {
-        return lineasDeOrden;
-    }
+
     public String getObservacion() {
         return observacion;
     }
@@ -92,9 +89,7 @@ public class Orden {
     public void setId(Long id) {
         this.id = id;
     }
-    public void setLineasDeOrden(List<LineaDeCarrito> lineasDeOrden) {
-        this.lineasDeOrden = lineasDeOrden;
-    }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }

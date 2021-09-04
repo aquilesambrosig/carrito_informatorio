@@ -58,21 +58,35 @@ public class ProductoController {
 
     @GetMapping(value = "/categoria")
     public List<Producto> findAll(@RequestParam(value="id") Long id) {
+    if (categoriaRepository.existsById(id) == false)
+    {
+        throw new NotFoundException("No existe la categoria");
+    }
     Categoria data = categoriaRepository.findAllById(id);
     return productoRepository.findByCategorias(data);
-
         
     }
 
     //// QUEDA ESTO PARA CUANDO IMPLEMENTE CATEGORIAS*/
 
     @GetMapping(value = "/buscar")
-    public List<Producto> buscarPorCategoriaYNombre(@RequestParam(value="categoria", required = false) Long categoria, @RequestParam(value="nombre", required = false) String nombre) {
+    public List<Producto> buscarPorCategoriaYNombre(@RequestParam(value="categoria", required = false, defaultValue = "0") Long categoria, @RequestParam(value="nombre", required = false) String nombre) {
         Categoria data = categoriaRepository.findAllById(categoria);
-        return productoRepository.findByCategoriasAndNombreStartingWith(data, nombre);
+        if (categoriaRepository.existsById(categoria) == false && categoria != 0)
+        {
+            throw new NotFoundException("No existe la categoria");
+        }
+        if (nombre == null) {
+            return productoRepository.findByCategorias(data);
+        }
+        if (categoria == 0) {
+            return productoRepository.findByNombreStartingWith(nombre); 
+        }
+              
+        return productoRepository.getByCategoriasAndNombreStartingWith(data, nombre);
     }
 
-    @DeleteMapping(value = "/producto/{id}")
+    @DeleteMapping(value = "/{id}")
     public String eliminarProductoPorID(@PathVariable("id") Long id) {
         productoRepository.deleteById(id);
         return "Producto eliminado";

@@ -2,6 +2,7 @@ package com.informatorio.carrito.controller;
 
 
 import com.informatorio.carrito.config.exception.BadRequestException;
+import com.informatorio.carrito.config.exception.NotFoundException;
 import com.informatorio.carrito.models.*;
 import com.informatorio.carrito.repository.CarritoRepository;
 import com.informatorio.carrito.repository.OrdenRepository;
@@ -60,13 +61,22 @@ public class OrdenController {
 
 
     @GetMapping(value = "/orden")
-    public List<Orden> verOrdenes(){
-        return  ordenRepository.findAll();
+    public ResponseEntity<List<Orden>> verOrdenes(){
+        try {return  ResponseEntity.ok(ordenRepository.findAll());
+        }
+        catch (Exception e) {
+            throw new NotFoundException("ORDEN  NO ENONTRADO");
+         }
     }
 
     @GetMapping(value = "/orden/{id_orden}")
-    public Orden verOrden(@PathVariable("id_orden") Long id_orden){
-        return ordenRepository.findById(id_orden).get();
+    public ResponseEntity<Orden> verOrden(@PathVariable("id_orden") Long id_orden){
+        try {
+            return ResponseEntity.ok(ordenRepository.findById(id_orden).get());
+        }
+        catch (Exception e) {
+            throw new NotFoundException("ORDEN  NO ENONTRADO");
+         }
     }
 
     @PostMapping(value = "/orden/{id_carrito}")
@@ -118,19 +128,29 @@ public class OrdenController {
         }
         return null;
     }
-
+*/
     
 
     @DeleteMapping(value = "/orden/{id_orden}")
-    public void borrarOrden(@PathVariable("id_orden") Long id_orden){
-        Orden orden =  ordenRepository.getById(id_orden);
+    public ResponseEntity<?> borrarOrden(@PathVariable("id_orden") Long id_orden){
+        try {
+            Orden orden =  ordenRepository.findById(id_orden).get();
         ordenRepository.delete(orden);
+        return new ResponseEntity<>("ORDEN Borrada", HttpStatus.OK);
+    }
+    catch (Exception e) {
+        throw new NotFoundException("ORDEN  NO ENONTRADO");
+     }
     }
 
     @GetMapping(value = "/usuario/{id_usuario}/orden")
-    public List<Orden> obtenerOrdenesDelUsuario(@PathVariable("id_usuario") Long id_usuario){
-        Usuario user = usuarioRepository.getById(id_usuario);
-        return ordenRepository.findByUsuario(user);
+    public ResponseEntity<List<Orden>> obtenerOrdenesDelUsuario(@PathVariable("id_usuario") Long id_usuario){
+        try {Usuario user = usuarioRepository.findById(id_usuario).get();
+        return ResponseEntity.ok(ordenRepository.findByUsuario(user));
     }
-*/
+    catch (Exception e) {
+        throw new NotFoundException("ORDEN  NO ENONTRADO");
+     }
+    }
+
 }
