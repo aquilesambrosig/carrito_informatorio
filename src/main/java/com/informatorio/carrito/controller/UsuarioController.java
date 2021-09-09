@@ -1,9 +1,11 @@
 package com.informatorio.carrito.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import com.informatorio.carrito.config.exception.BadRequestException;
 import com.informatorio.carrito.models.Usuario;
 import com.informatorio.carrito.repository.UsuarioRepository;
 
@@ -41,7 +43,8 @@ public class UsuarioController {
         return "hola informatorio";
     }
 
-  
+
+
 
     @GetMapping(value = "/usuario")
     public ResponseEntity<?> verUsuarios(@RequestParam(value="ciudad", required = false) String ciudad, 
@@ -61,6 +64,23 @@ public class UsuarioController {
        
     }
 
+
+
+
+    @GetMapping(value = "/usuario/fecha")
+    //public ResponseEntity getUsuarioFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDeCreacion)
+    public ResponseEntity getUsuarioFechaEntre(@RequestParam(value="desde", required = false, defaultValue = "1900-01-01") String fechaDesde
+    ,@RequestParam(value="hasta", required = false, defaultValue = "2100-12-12") String fechaHasta) {
+
+        try{
+           LocalDate desde = LocalDate.parse(fechaDesde);
+           LocalDate hasta = LocalDate.parse(fechaHasta);
+    
+    return ResponseEntity.ok(usuarioRepository.findByFechaAltaBetween(desde, hasta));
+    } catch (Exception e) {
+        throw new BadRequestException("MAL FORMATO FECHA");
+        }
+    } 
 
 
 

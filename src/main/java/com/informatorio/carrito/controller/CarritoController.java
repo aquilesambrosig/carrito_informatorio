@@ -158,6 +158,11 @@ public class CarritoController {
         Carrito carrito = carritoRepository.getById(idCarrito);
         Producto producto = productoRepository.getById(operacionCarrito.getProductoId());
         LineaDeCarrito lineaDeCarrito = new LineaDeCarrito();
+        if (carrito.getUsuario().getId() == userId) {
+            
+        
+
+
         lineaDeCarrito.setCarrito(carrito);
         lineaDeCarrito.setProducto(producto);
         lineaDeCarrito.setCantidad(operacionCarrito.getCantidad());
@@ -171,6 +176,7 @@ public class CarritoController {
         } catch (Exception e) {
             throw new BadRequestException("CARRITO NO ENCONTRADO");
          }
+        }return new ResponseEntity<>("NO PUEDES MODIFICAR ESTE CARRITO", HttpStatus.UNAUTHORIZED);
     }
 
     @DeleteMapping(value = "/carrito/{id}")

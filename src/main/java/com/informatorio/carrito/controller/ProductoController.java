@@ -8,6 +8,7 @@ import com.informatorio.carrito.models.Producto;
 import com.informatorio.carrito.repository.CategoriaRepository;
 import com.informatorio.carrito.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +34,15 @@ public class ProductoController {
 
 
     @PostMapping(value = "")
-    public Producto crearProducto(@RequestBody Producto producto){
-        return productoRepository.save(producto);
+    public ResponseEntity<?> crearProducto(@RequestBody Producto producto){
+        if (productoRepository.findByCodigoInventario(producto.getCodigoInventario()) != null) {
+            return new ResponseEntity<> ("El codigo de inventario debe ser unico", HttpStatus.CONFLICT);
+        }
+        productoRepository.save(producto);
+        return new ResponseEntity<>("Producto creado correctamente", HttpStatus.CREATED);
+
+
+       
     }
 
 

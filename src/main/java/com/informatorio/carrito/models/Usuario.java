@@ -43,20 +43,20 @@ public class Usuario {
 
     private String nombre;
 
+    @Size(min=6, max = 40)  
     private String apellido;
 
     private String direccion;
 
    
     @Column(nullable = false,unique = true)
-    @Email
-    @Size(max = 254)
+    @Email(message = "Formato de correo invalido")
     private String email;
 
-    @JsonBackReference
+    
     @Column(nullable = false)
-    @NotBlank    
-    @Size(min = 6, max = 50)
+    @NotBlank
+    @Size(min=6, max = 40)    
     private String password;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -122,9 +122,7 @@ public List<Carrito> getCarritos() {
     public Long getId() {
         return id;
     }
-    public String getPassword() {
-        return password;
-    }
+ 
     public String getEmail() {
         return email;
     }

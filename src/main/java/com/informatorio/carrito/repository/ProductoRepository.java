@@ -28,6 +28,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long>{
     List<Producto> getByCategorias(Categoria data);
     List<Producto> findByFechaAltaAfter(LocalDate fechaAlta);
     List<Producto> findByFechaAltaBetween(LocalDate desde, LocalDate hasta);
+    Producto findByCodigoInventario(String codigoInventario);
     
    
 

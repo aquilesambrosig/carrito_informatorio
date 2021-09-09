@@ -100,11 +100,14 @@ public class OrdenController {
 
 
 
-    @PostMapping(value = "/orden/{id_carrito}")
-    public ResponseEntity<?> crearOrden(@PathVariable("id_carrito") Long id_carrito/*,@RequestBody Orden orden*/){
+    @PostMapping(value = "/orden/{id_carrito}/usuario/{id_usuario}")
+    public ResponseEntity<?> crearOrden(@PathVariable("id_carrito") Long id_carrito, @PathVariable("id_usuario") Long id_usuario/*,@RequestBody Orden orden*/){
        // Orden orden = ordenRepository.getById(id_carrito);
         Carrito carrito = carritoRepository.getById(id_carrito);
         Orden orden = new Orden();
+        if (carrito.getUsuario().getId() == id_usuario ) {
+            
+        
 
         if (
             (carrito.getEstadoCarrito()==EstadoCarrito.ACTIVO) && (carrito.getLineasDeCarrito().size()>=1)) {
@@ -125,6 +128,8 @@ public class OrdenController {
             return new ResponseEntity<>("Orden Generada", HttpStatus.CREATED);
         }
         return new ResponseEntity<>("CARRITO CERRADO O SIN PRODUCTOS", HttpStatus.I_AM_A_TEAPOT);
+    }
+    return new ResponseEntity<>("NO ESTAS AUTORIZADO", HttpStatus.UNAUTHORIZED);
     }
        
     
